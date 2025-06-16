@@ -1,7 +1,8 @@
+
 export const inputsFields = [
   {
-    id: "fullName",
-    name: "fullName",
+    id: "fullname",
+    name: "fullname",
     label: "Full Name",
     placeholder: "Enter your full name",
     type: "text",

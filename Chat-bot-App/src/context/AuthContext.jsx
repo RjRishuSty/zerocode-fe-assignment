@@ -1,22 +1,31 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from "react";
 
-// 1. Create context
+//* Create context
 export const AuthContext = createContext();
 
-// 2. Create provider component
+//* Create provider component
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // user = null means logged out
+  const [isAuthUser, setIsAuthUser] = useState(null);
 
+   useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    if (token && user) setIsAuthUser(JSON.parse(user));
+  }, []);
+ 
   const login = (userData) => {
-    setUser(userData); // userData: { name, email, token, etc. }
+    localStorage.setItem("token", "dummy-jwt-token");
+    localStorage.setItem("user", JSON.stringify(userData));
+    setIsAuthUser(userData);
   };
 
   const logout = () => {
-    setUser(null);
+    localStorage.removeItem("token");
+    setIsAuthUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoggedIn: !!user }}>
+    <AuthContext.Provider value={{ isAuthUser, login, logout, }}>
       {children}
     </AuthContext.Provider>
   );

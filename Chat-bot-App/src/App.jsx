@@ -1,25 +1,35 @@
-import React, { useEffect } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import React, { useContext } from "react";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import AppLayout from "./layouts/AppLayout";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
+import AuthPage from "./pages/AuthPage";
+import { AuthContext } from "./context/AuthContext";
 
 const App = () => {
-  useEffect(() => {
-    const appMode = localStorage.getItem("appMode");
-    if (!appMode) {
-      localStorage.setItem("appMode", "light");
-    }
-  }, []);
+  const { isAuthUser } = useContext(AuthContext);
+  console.log(isAuthUser);
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: <AppLayout />,
       children: [
-        { index: true, element: <HomePage /> },
-        { path: "login", element: <LoginPage /> },
-        { path: "register", element: <RegisterPage /> },
+        {
+          index: true,
+          element: isAuthUser ? <HomePage /> : <Navigate to="login" />,
+        },
+        {
+          path: "login",
+          element: !isAuthUser ? <AuthPage /> : <Navigate to="/" />,
+        },
+        {
+          path: "register",
+          element: !isAuthUser ? <AuthPage /> : <Navigate to="/" />,
+        },
       ],
     },
   ]);
