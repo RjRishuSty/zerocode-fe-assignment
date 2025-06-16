@@ -1,75 +1,82 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Box,
-  Typography,
-  TextField,
-  IconButton,
-  CircularProgress,
-  Paper,
-} from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
+// src/components/ChatBox.jsx
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { Box, Typography, useMediaQuery } from "@mui/material";
+
 import MessageBubble from "./MessageBubble";
+import { flexCenter } from "../styles/customeStyles";
+import { ChatContext } from "../context/ChatContext";
+import ChatInput from "./ChatInput";
 
 const ChatBox = () => {
-  const [messages, setMessages] = useState([]);
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const smallLaptop = useMediaQuery("(max-width:1200px)");
+  const { currentMessages, sendMessage } = useContext(ChatContext);
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const handleSend = () => {
+  const handleSend = useCallback(() => {
     if (!userInput.trim()) return;
 
-    const userMsg = { sender: "user", text: userInput };
-    setMessages((prev) => [...prev, userMsg]);
+    const text = userInput.trim();
+    sendMessage({ sender: "user", text }); // User message
     setUserInput("");
     setLoading(true);
 
-    // Fake bot response (simulate API delay)
     setTimeout(() => {
-      const botMsg = {
-        sender: "bot",
-        text: `Echo: ${userMsg.text}`,
-      };
-      setMessages((prev) => [...prev, botMsg]);
+      sendMessage({ sender: "bot", text: `Echo: ${text}` }); // Bot reply
       setLoading(false);
     }, 1000);
-  };
+  }, [userInput, sendMessage]);
+
+  const handleKeyPress = useCallback(
+    (e) => {
+      if (e.key === "Enter") handleSend();
+    },
+    [handleSend]
+  );
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") handleSend();
-  };
+  }, [currentMessages]);
 
   return (
     <Box
       sx={{
-        width: "80%",
+        width: smallLaptop ? "100%" : "80%",
         mx: "auto",
-        mt: 5,
+        mt:isMobile?1: 5,
         display: "flex",
         flexDirection: "column",
-        height: "80vh",
+        height:isMobile?"72vh":"80vh",
         border: "1px solid #ccc",
         borderRadius: 2,
         overflow: "hidden",
-              backgroundColor: "background.default",
+        backgroundColor: "background.primary",
       }}
     >
-
       <Box
         sx={{
           flex: 1,
           p: 2,
           overflowY: "auto",
-          backgroundColor: "background.paper",
+          backgroundColor: "custom.secondary",
+          ...(currentMessages.length <= 0 ? flexCenter : {}),
         }}
       >
-        {messages.map((msg, i) => (
-          <MessageBubble key={i} sender={msg.sender} text={msg.text} />
-        ))}
+        {currentMessages.length === 0 ? (
+          <Typography variant="h2">What can I help?</Typography>
+        ) : (
+          currentMessages.map((msg, i) => (
+            <MessageBubble key={i} sender={msg.sender} text={msg.text} />
+          ))
+        )}
         {loading && <Typography>Bot is typing...</Typography>}
         <div ref={messagesEndRef} />
       </Box>
@@ -79,19 +86,15 @@ const ChatBox = () => {
           p: 2,
           display: "flex",
           borderTop: "1px solid #ddd",
-          backgroundColor: "background.paper",
+          backgroundColor: "custom.secondary",
         }}
       >
-        <TextField
-          fullWidth
-          placeholder="Type a message..."
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          onKeyDown={handleKeyPress}
+        <ChatInput
+          handleKeyPress={handleKeyPress}
+          userInput={userInput}
+          handleSend={handleSend}
+          setUserInput={setUserInput}
         />
-        <IconButton onClick={handleSend} color="primary">
-          {loading ? <CircularProgress size={24} /> : <SendIcon fontSize="large" sx={{color:'text.primary'}} />}
-        </IconButton>
       </Box>
     </Box>
   );

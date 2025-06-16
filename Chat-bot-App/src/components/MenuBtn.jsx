@@ -1,35 +1,18 @@
 import React from "react";
-
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 
 import { IconButton } from "@mui/material";
-const MenuBtn = ({
-  handleToggleMenu,
-  showSidebar,
-  useIn,
-  onGridSizeChange,
-}) => {
-  const useInAdmin = useIn === "AdminPage";
-
+const MenuBtn = ({ setToggleSidebar, toggleSidebar }) => {
   return (
     <IconButton
-      onClick={useInAdmin ? onGridSizeChange : handleToggleMenu}
-      sx={{
-        backgroundColor: "#f9004d",
-        "&:hover": { backgroundColor: "#f9004d" },
-      }}
+      onClick={()=>setToggleSidebar(!toggleSidebar)}
+      sx={{ bgcolor: "custom.primary" }}
     >
-      {showSidebar ? (
-        <CloseIcon
-          fontSize={useInAdmin ? "medium" : "large"}
-          sx={{ color: "white" }}
-        />
+      {toggleSidebar ? (
+        <ArrowRightIcon fontSize="large" sx={{ color: "text.primary" }} />
       ) : (
-        <MenuIcon
-          fontSize={useInAdmin ? "medium" : "large"}
-          sx={{ color: "white" }}
-        />
+        <ArrowLeftIcon fontSize="large" sx={{ color: "text.primary" }} />
       )}
     </IconButton>
   );

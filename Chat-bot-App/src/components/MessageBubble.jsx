@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box, Typography } from "@mui/material";
+import { ThemeContext } from "../context/ThemeContext";
 
 const MessageBubble = ({ sender, text }) => {
+  const { mode } = useContext(ThemeContext);
   const isUser = sender === "user";
 
   return (
@@ -18,7 +20,11 @@ const MessageBubble = ({ sender, text }) => {
           py: 1,
           borderRadius: 2,
           maxWidth: "70%",
-          backgroundColor: isUser ? "#DCF8C6" : "#e0e0e0",
+          backgroundColor: isUser
+            ? "background.paper"
+            : mode === "light"
+              ? "#ccc"
+              : "#6abb44",
         }}
       >
         <Typography variant="body1">{text}</Typography>

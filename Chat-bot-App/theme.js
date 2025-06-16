@@ -8,22 +8,17 @@ export const getTheme = (mode) => {
     palette: {
       mode,
       background: {
-        default: isLight ? "#f9f7f5" : "#2F312B",
-        paper: isLight ? "#e3f6f6" : "#181C14",
+        default: isLight ? "#f2f2f2" : "#2F312B",
+        paper: isLight ? "#DDF6D2" : "#181C14",
+        
       },
       text: {
         primary: isLight ? "#181C14" : "#f9f7f5",
         secondary: isLight ? "#2F312B" : "#E9DDCB",
       },
       custom: {
-        light1: "#d0e7e7",
-        light2: "#d5ebeb",
-        light3: "#e3f6f6",
-        light4: "#f9f7f5",
-        dark1: "#181C14",
-        dark2: "#2F312B",
-        dark3: "#596655",
-        dark4: "#E9DDCB",
+        primary:isLight?'#B0DB9C':'#2F312B',
+        secondary:isLight?"#FFFDF6":'#2F312B'
       },
     },
     typography: {
@@ -52,13 +47,13 @@ export const getTheme = (mode) => {
         styleOverrides: {
           root: {
             "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "black",
+              borderColor: isLight?"black":"#fff",
             },
             "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "black",
+             borderColor: isLight?"black":"#fff",
             },
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "black",
+             borderColor: isLight?"black":"#fff",
             },
           },
         },

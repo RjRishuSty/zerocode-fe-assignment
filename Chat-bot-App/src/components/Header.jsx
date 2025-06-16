@@ -18,7 +18,7 @@ const {logout}  = useContext(AuthContext);
         </Typography>
         <Button
           variant="contained"
-          color="error"
+          sx={{backgroundColor:'custom.primary',mr:2,color:'text.primary'}}
            onClick={handleLogout}
           startIcon={<LogoutIcon />}
         >
