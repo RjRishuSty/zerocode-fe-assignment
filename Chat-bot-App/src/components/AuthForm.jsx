@@ -1,8 +1,8 @@
 import React from "react";
-import { inputsFields } from "../../inputsFields";
 import { Link, useLocation } from "react-router-dom";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import CustomInput from "../components/CustomInput";
+import { inputsFields } from "../utils/inputsFields";
 
 const AuthForm = ({ useIn, formData, onChange }) => {
   const location = useLocation();

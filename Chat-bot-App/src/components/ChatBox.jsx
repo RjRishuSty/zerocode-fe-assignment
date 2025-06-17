@@ -6,35 +6,44 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Alert, Box, Typography, useMediaQuery } from "@mui/material";
 
 import MessageBubble from "./MessageBubble";
 import { flexCenter } from "../styles/customeStyles";
 import { ChatContext } from "../context/ChatContext";
 import ChatInput from "./ChatInput";
+import { AuthContext } from "../context/AuthContext";
+import AlertMessage from "./AlertMessage";
+import { profileContext } from "../context/ProfileContext";
+import ProfileModel from "./ProfileModel";
 
 const ChatBox = () => {
+  //* All hooks...........
+  const { isAuthUser } = useContext(AuthContext);
   const isMobile = useMediaQuery("(max-width:600px)");
   const smallLaptop = useMediaQuery("(max-width:1200px)");
   const { currentMessages, sendMessage } = useContext(ChatContext);
+   const {profile} = useContext(profileContext);
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
+  //* Handle message send..........
   const handleSend = useCallback(() => {
     if (!userInput.trim()) return;
 
     const text = userInput.trim();
-    sendMessage({ sender: "user", text }); // User message
+    sendMessage({ sender: "user", text }); //* User message
     setUserInput("");
     setLoading(true);
 
     setTimeout(() => {
-      sendMessage({ sender: "bot", text: `Echo: ${text}` }); // Bot reply
+      sendMessage({ sender: "bot", text: `Echo: ${text}` }); //* Bot reply
       setLoading(false);
     }, 1000);
   }, [userInput, sendMessage]);
 
+  //* send message use enter button
   const handleKeyPress = useCallback(
     (e) => {
       if (e.key === "Enter") handleSend();
@@ -42,6 +51,7 @@ const ChatBox = () => {
     [handleSend]
   );
 
+  //* scroll bihavior useing ref........
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [currentMessages]);
@@ -51,17 +61,19 @@ const ChatBox = () => {
       sx={{
         width: smallLaptop ? "100%" : "80%",
         mx: "auto",
-        mt:isMobile?2: 5,
+        mt: isMobile ? 2 : 5,
         display: "flex",
         flexDirection: "column",
-        height:"80vh",
+        height: "80vh",
         border: "1px solid #ccc",
         borderRadius: 2,
         overflow: "hidden",
         backgroundColor: "background.primary",
+        
       }}
     >
-      <Box
+      <AlertMessage />
+      {profile?<ProfileModel/>:<><Box
         sx={{
           flex: 1,
           p: 2,
@@ -71,7 +83,9 @@ const ChatBox = () => {
         }}
       >
         {currentMessages.length === 0 ? (
-          <Typography variant="h2">What can I help?</Typography>
+          <Typography variant="h2">
+            Good to see you, {isAuthUser.fullname}.
+          </Typography>
         ) : (
           currentMessages.map((msg, i) => (
             <MessageBubble key={i} sender={msg.sender} text={msg.text} />
@@ -94,8 +108,9 @@ const ChatBox = () => {
           userInput={userInput}
           handleSend={handleSend}
           setUserInput={setUserInput}
+          loading={loading}
         />
-      </Box>
+      </Box></>}
     </Box>
   );
 };

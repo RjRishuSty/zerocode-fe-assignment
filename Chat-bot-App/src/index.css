@@ -10,16 +10,15 @@ body {
   font-family: "Nunito", sans-serif !important;
 }
 
-a{
-    text-decoration: none !important;
+a {
+  text-decoration: none !important;
 }
-
-
 
 /* Scrollbar */
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
+  border-radius: 50px !important;
 }
 
 /* Track (background) */
@@ -30,7 +29,7 @@ a{
 /* Handle (thumb) */
 ::-webkit-scrollbar-thumb {
   background-color: #888;
-  border-radius: 8px;
+  border-radius: 8px !important;
   border: 2px solid transparent;
   background-clip: content-box;
 }
@@ -39,4 +38,3 @@ a{
 ::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
-

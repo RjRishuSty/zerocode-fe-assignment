@@ -1,8 +1,16 @@
 import { IconButton, TextField } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import SendIcon from "@mui/icons-material/Send";
+import StopIcon from "@mui/icons-material/Stop";
+import VoiceInput from "./VoiceInput";
 
-const ChatInput = ({ userInput, handleKeyPress, handleSend, setUserInput }) => {
+const ChatInput = ({
+  loading,
+  userInput,
+  handleKeyPress,
+  handleSend,
+  setUserInput,
+}) => {
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -17,10 +25,18 @@ const ChatInput = ({ userInput, handleKeyPress, handleSend, setUserInput }) => {
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}
         onKeyDown={handleKeyPress}
-        sx={{mr:1}}
+        sx={{ mr: 1 }}
       />
-      <IconButton onClick={handleSend}>
-        <SendIcon fontSize="large" sx={{ color: "text.primary" }} />
+      <VoiceInput onResult={setUserInput}/>
+      <IconButton
+        onClick={handleSend}
+        sx={{ border: loading ? "2px solid" : "", borderColor: "text.primary",ml:1 }}
+      >
+        {loading ? (
+          <StopIcon fontSize="medium" sx={{ color: "text.primary" }} />
+        ) : (
+          <SendIcon fontSize="medium" sx={{ color: "text.primary" }} />
+        )}
       </IconButton>
     </>
   );

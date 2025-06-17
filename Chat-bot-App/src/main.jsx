@@ -6,6 +6,7 @@ import { SnackbarProvider } from "notistack";
 import AuthProvider from "./context/AuthContext.jsx";
 import ThemeContextProvider from "./context/ThemeContext.jsx";
 import { ChatProvider } from "./context/ChatContext.jsx";
+import ProfileProvider from "./context/ProfileContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -13,7 +14,9 @@ createRoot(document.getElementById("root")).render(
       <ThemeContextProvider>
         <AuthProvider>
           <ChatProvider>
-            <App />
+            <ProfileProvider>
+              <App />
+            </ProfileProvider>
           </ChatProvider>
         </AuthProvider>
       </ThemeContextProvider>

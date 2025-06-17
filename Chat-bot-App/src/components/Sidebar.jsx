@@ -17,32 +17,41 @@ import {
   ExpandLess,
   ExpandMore,
   Add as AddIcon,
+  Download as DownloadIcon,
 } from "@mui/icons-material";
 import { NavLink, useLocation } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { ChatContext } from "../context/ChatContext";
 import { flexCenter } from "../styles/customeStyles";
 import { AuthContext } from "../context/AuthContext";
+import { profileContext } from "../context/ProfileContext";
 
 const navItems = [
   { label: "New Chat", icon: <AddIcon />, action: "newChat", key: "newChat" },
-  { label: "Profile", icon: <PersonIcon />, to: "/profile", key: "profile" },
+  { label: "Profile", icon: <PersonIcon />, action: "profile", key: "profile" },
   {
-    label: "Settings",
-    icon: <SettingsIcon />,
-    to: "/settings",
-    key: "settings",
+    label: "Export Chats",
+    icon: <DownloadIcon />,
+    action: "exportChats",
+    key: "exportChats",
   },
 ];
 
 const Sidebar = ({ setToggleSidebar }) => {
   const { logout } = useContext(AuthContext);
+
   const isMobile = useMediaQuery("(max-width:600px)");
   const [openChats, setOpenChats] = useState(false);
   const [activeNav, setActiveNav] = useState("newChat"); //* default active
-
-  const { chats, activeChatId, setActiveChatId, startNewChat } =
-    useContext(ChatContext);
+  const { handleProfileOpen, handleProfileClose} = useContext(profileContext);
+  const {
+    exportChat,
+    chats,
+    activeChatId,
+    setActiveChatId,
+    startNewChat,
+    currentMessages,
+  } = useContext(ChatContext);
   const location = useLocation();
 
   //! Start a new chat on first mount...........
@@ -59,8 +68,13 @@ const Sidebar = ({ setToggleSidebar }) => {
 
   const handleItemClick = (item) => {
     if (item.action === "newChat") {
+      handleProfileClose();
       startNewChat();
     }
+    if (item.action === "profile") {
+      handleProfileOpen();
+    }
+
     setActiveNav(item.key);
     setToggleSidebar((prev) => !prev);
   };
@@ -92,32 +106,21 @@ const Sidebar = ({ setToggleSidebar }) => {
 
           return (
             <ListItem disablePadding key={index}>
-              {item.to ? (
+              {item.action && (
                 <ListItemButton
-                  component={NavLink}
-                  to={item.to}
-                  sx={{
-                    color: isActive ? "#fff" : "inherit",
-                    backgroundColor: isActive ? "custom.primary" : "transprant",
-                  }}
-                  onClick={() => setActiveNav(item.key)}
-                >
-                  <ListItemIcon sx={{ color: isActive ? "#fff" : "gray" }}>
-                    {React.cloneElement(item.icon, {
-                      fontSize: "medium",
-                    })}
-                  </ListItemIcon>
-                  <ListItemText primary={item.label} />
-                </ListItemButton>
-              ) : (
-                <ListItemButton
-                  onClick={() => handleItemClick(item)}
+                  onClick={() =>
+                    item.key === "exportChats"
+                      ? exportChat(currentMessages)
+                      : handleItemClick(item)
+                  }
                   sx={{
                     backgroundColor: isActive ? "custom.primary" : "transprant",
                     ...(isMobile ? flexCenter : ""),
                   }}
                 >
-                  <ListItemIcon sx={{ color: isActive ? "#fff" : "inherit" }}>
+                  <ListItemIcon
+                    sx={{ color: isActive ? "#fff" : "text.secondary" }}
+                  >
                     {React.cloneElement(item.icon, {
                       fontSize: "medium",
                     })}
@@ -136,12 +139,14 @@ const Sidebar = ({ setToggleSidebar }) => {
             <ListItemText primary={"Logout"} />
           </ListItemButton>
         )}
+
+        {/* TODO: Chat History */}
         <ListItem
           disablePadding
           onClick={() => setOpenChats(!openChats)}
           sx={{
             borderTop: "1px solid #ccc",
-            borderLeft: "1px solid #ccc",
+            borderLeft: openChats ? "1px solid #ccc" : "",
             mt: 3,
           }}
         >
@@ -174,11 +179,17 @@ const Sidebar = ({ setToggleSidebar }) => {
                   setActiveNav("");
                 }}
                 sx={{
-                  pl: 4,
+                  pl: 1,
                   color: chat.id === activeChatId ? "#fff" : "inherit",
                 }}
               >
-                <ListItemText primary={`Chat ${chat.id}`} />
+                <ListItemText
+                  primary={
+                    chat.messages[0].text.length > 30
+                      ? `${chat.messages[0].text.slice(0, 30)}...`
+                      : chat.messages[0].text
+                  }
+                />
               </ListItemButton>
             ))}
           </List>

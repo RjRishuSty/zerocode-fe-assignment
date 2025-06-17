@@ -5,8 +5,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import AppLayout from "./layouts/AppLayout";
-import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
+import ChatPage from "./pages/ChatPage";
 import { AuthContext } from "./context/AuthContext";
 
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
       children: [
         {
           index: true,
-          element: isAuthUser ? <HomePage /> : <Navigate to="login" />,
+          element: isAuthUser ? <ChatPage /> : <Navigate to="login" />,
         },
         {
           path: "login",
