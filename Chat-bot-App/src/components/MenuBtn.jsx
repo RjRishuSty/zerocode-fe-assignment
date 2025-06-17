@@ -1,18 +1,17 @@
 import React from "react";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { IconButton } from "@mui/material";
-const MenuBtn = ({ setToggleSidebar, toggleSidebar }) => {
+const MenuBtn = ({ handleToggleSidebar, toggleSidebar }) => {
   return (
     <IconButton
-      onClick={()=>setToggleSidebar(!toggleSidebar)}
-      sx={{ bgcolor: "custom.primary" }}
+      onClick={handleToggleSidebar}
     >
-      {toggleSidebar ? (
-        <ArrowRightIcon fontSize="large" sx={{ color: "text.primary" }} />
+      {!toggleSidebar ? (
+        <MenuIcon fontSize="large" sx={{ color: "text.primary" }} />
       ) : (
-        <ArrowLeftIcon fontSize="large" sx={{ color: "text.primary" }} />
+        <CloseIcon fontSize="large" sx={{ color: "text.primary" }} />
       )}
     </IconButton>
   );

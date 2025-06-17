@@ -1,17 +1,18 @@
 import React, { useContext } from "react";
-import { IconButton } from "@mui/material";
+import { IconButton, useMediaQuery } from "@mui/material";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { ThemeContext } from "../context/ThemeContext";
 
 const ModeBtn = () => {
   const { toggleMode, mode } = useContext(ThemeContext);
+    const isMobile = useMediaQuery("(max-width:600px)");
   return (
     <IconButton onClick={toggleMode} color="inherit">
       {mode === "dark" ? (
-        <Brightness7Icon fontSize="large" sx={{ color: "text.primary" }} />
+        <Brightness7Icon fontSize={isMobile?"medium":"large"} sx={{ color: "text.primary" }} />
       ) : (
-        <Brightness4Icon fontSize="large" sx={{ color: "text.primary" }} />
+        <Brightness4Icon fontSize={isMobile?"medium":"large"} sx={{ color: "text.primary" }} />
       )}
     </IconButton>
   );

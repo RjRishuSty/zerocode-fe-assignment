@@ -54,7 +54,7 @@ const ChatBox = () => {
         mt:isMobile?1: 5,
         display: "flex",
         flexDirection: "column",
-        height:isMobile?"72vh":"80vh",
+        height:isMobile?"85vh":"80vh",
         border: "1px solid #ccc",
         borderRadius: 2,
         overflow: "hidden",

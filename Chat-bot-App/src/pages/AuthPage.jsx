@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Grid, Button, Box, Typography } from "@mui/material";
+import { Grid, Box, } from "@mui/material";
 
 import loginImg from "../assets/chatbot.png";
 import { flexCenter } from "../styles/customeStyles";
@@ -18,6 +18,7 @@ const AuthPage = () => {
     password: "",
     confirmPassword: "",
   });
+  // const isMobile = useMediaQuery("(max-width:600px)");
   //TODO: If page is login page ........
   const loginpage = location.pathname === "/login";
 
@@ -102,14 +103,15 @@ const AuthPage = () => {
     }
   };
 
-  console.log("FormData", formData);
   return (
-    <Grid container sx={{ minHeight: "100vh" }}>
+    <Grid container columnSpacing={2} sx={{ minHeight: "100vh",backgroundColor:'custom.secondary' }}>
       <Grid
-        size={{ xs: 12, sm: 12, md: 6 }}
+        size={{ xs: 12, sm: 6, md: 6 }}
         sx={{
           ...flexCenter,
           background: "linear-gradient(to bottom, #d0e7e7, #E9DDCB)",
+          display:{xs:'none',sm:'flex'},
+        // filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.9))",
         }}
       >
         <Box
@@ -122,12 +124,12 @@ const AuthPage = () => {
       <Grid
         component="form"
         onSubmit={handleSubmit}
-        size={{ xs: 12, sm: 12, md: 6 }}
+        size={{ xs: 12, sm: 6, md: 6 }}
         sx={{
           ...flexCenter,
           flexDirection: "column",
-          px: 5,
-          backgroundColor: "custom.light4",
+          px:3,
+          backgroundColor: "custom.secondary",
         }}
       >
         <AuthForm

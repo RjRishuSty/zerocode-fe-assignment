@@ -3,7 +3,6 @@ import { inputsFields } from "../../inputsFields";
 import { Link, useLocation } from "react-router-dom";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import CustomInput from "../components/CustomInput";
-import LoginIcon from "@mui/icons-material/Login";
 
 const AuthForm = ({ useIn, formData, onChange }) => {
   const location = useLocation();
@@ -31,7 +30,7 @@ const AuthForm = ({ useIn, formData, onChange }) => {
         return (
           <Grid container columnSpacing={3}>
             {inputsFields.map((item) => (
-              <Grid key={item.id} size={{ xs: 12, sm: 12, md: 6 }}>
+              <Grid key={item.id} size={{ xs: 12, sm: 12, md: item.type ==='password'?12:6 }}>
                 <CustomInput
                   item={item}
                   value={formData[item.id]}
@@ -63,10 +62,9 @@ const AuthForm = ({ useIn, formData, onChange }) => {
         size="large"
         variant="contained"
         type="submit"
-        sx={{ mt: 2, backgroundColor: "custom.light1", color: "#000" }}
-        endIcon={<LoginIcon />}
+        sx={{ mt: 2, backgroundColor: "custom.primary", color: "#000" }}
       >
-        {useIn === "login" ? "Login" : "Create an Account"}
+        {useIn === "login" ? "Login" : "Register"}
       </Button>
 
       <Typography variant="body1" sx={{ mt: 5 }}>

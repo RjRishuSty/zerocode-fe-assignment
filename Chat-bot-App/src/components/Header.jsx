@@ -1,30 +1,42 @@
 // src/pages/Admin/components/Topbar.jsx
 import React, { useContext } from "react";
-import { AppBar, Toolbar, Box, Typography, Button } from "@mui/material";
+import { AppBar, Toolbar, Box, Typography, Button, useMediaQuery } from "@mui/material";
 import ModeBtn from "./ModeBtn";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import { AuthContext } from "../context/AuthContext";
+import MenuBtn from "./MenuBtn";
 
-const Header = () => {
-const {logout}  = useContext(AuthContext);
-  const handleLogout = ()=>{
+const Header = ({ handleToggleSidebar, toggleSidebar }) => {
+  const { logout } = useContext(AuthContext);
+  const isMobile = useMediaQuery("(max-width:600px)");
+
+  const handleLogout = () => {
     logout();
-  }
+  };
+
   return (
     <AppBar position="static" sx={{ backgroundColor: "background.default" }}>
       <Toolbar>
-        <Typography variant="subtitle1" sx={{ flexGrow: 1}}>
-         Chat with AI
+        <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
+          Chat with AI
         </Typography>
-        <Button
+        {!isMobile && <Button
           variant="contained"
-          sx={{backgroundColor:'custom.primary',mr:2,color:'text.primary'}}
-           onClick={handleLogout}
+          sx={{
+            backgroundColor: "custom.primary",
+            mr: 2,
+            color: "text.primary",
+          }}
+          onClick={handleLogout}
           startIcon={<LogoutIcon />}
         >
           Logout
-        </Button>
+        </Button>}
         <ModeBtn />
+        {isMobile&&<MenuBtn
+          handleToggleSidebar={handleToggleSidebar}
+          toggleSidebar={toggleSidebar}
+        />}
       </Toolbar>
     </AppBar>
   );
