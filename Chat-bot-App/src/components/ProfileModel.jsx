@@ -1,9 +1,22 @@
-import React from "react";
-// import { profileContext } from "../context/ProfileContext";
-import { Box, Modal, Stack, Typography } from "@mui/material";
+import React, { useContext } from "react";
+import {
+  Box,
+  Modal,
+  Stack,
+  Typography,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import { AuthContext } from "../context/AuthContext";
+import { ChatContext } from "../context/ChatContext";
 
 const ProfileModel = () => {
-  // const {modelOpen, handleClose} = useContext(profileContext);
+  const {isAuthUser} = useContext(AuthContext);
+  const {chats} = useContext(ChatContext);
+  console.log(chats);
+
   return (
     <Stack
       sx={{
@@ -11,16 +24,51 @@ const ProfileModel = () => {
         position: "relative",
         width: "100%",
         height: "100%",
+        p: 3,
       }}
     >
-      <Box sx={{ border: "2px solid blue" }}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          User Profile
+      <Typography variant="h2" gutterBottom>
+         User Profile Details
+      </Typography>
+
+      <Box sx={{ mb: 2 }}>
+        <Typography variant="subtitle1">
+          <strong>Full Name:</strong> {isAuthUser.fullname}
         </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+        <Typography variant="subtitle1">
+          <strong>Email:</strong> {isAuthUser.email}
+        </Typography>
+        <Typography variant="subtitle1">
+          <strong>Password:</strong> {isAuthUser.password}
         </Typography>
       </Box>
+
+      <Divider sx={{ my: 2 }} />
+
+      <Typography variant="h6" gutterBottom>
+        💬 Chat History
+      </Typography>
+
+      {chats.length === 0 ? (
+        <Typography variant="body2" color="text.secondary">
+          No chat history found.
+        </Typography>
+      ) : (
+        <List dense sx={{maxHeight:'100%',overflowY:'auto'}}>
+          {chats.map((chat, index) => (
+            <ListItem key={index} divider>
+              <ListItemText
+                primary={`Chat ${index + 1}`}
+                secondary={
+                  chat.messages?.length
+                    ? `${chat.messages.length} messages`
+                    : "No messages"
+                }
+              />
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Stack>
   );
 };
