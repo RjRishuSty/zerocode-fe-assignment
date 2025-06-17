@@ -39,7 +39,7 @@ This is a chatbot web application built for the ZeroCode Frontend Engineer Assig
 - **React 19**
 - **Vite 6**
 - **MUI (Material UI 7)**
-- **@mui/icons-material**
+- **Material icons**
 - **React Router v7**
 - **Notistack** – for snackbars/toasts
 - **Web Speech API** – for voice input
@@ -64,23 +64,6 @@ This is a chatbot web application built for the ZeroCode Frontend Engineer Assig
 - Isolating export logic into clean, reusable utility functions
 
 ---
-
-## 📂 Project Structure
-
-Chat-bot-App/
-│
-├── public/ # Static files
-├── src/ # All source code
-│ ├── components/ # Reusable UI components (ChatBox, InputBar, etc.)
-│ ├── context/ # Chat context for managing global state
-│ ├── hooks/ # Custom hooks (useVoiceInput)
-│ ├── pages/ # Route-based views (Login, Register, Chat)
-│ ├── utils/ # Utility functions (chat export, theme, auth)
-│ └── App.jsx # Root component
-│
-├── index.html
-├── package.json
-
 
 
 ---
