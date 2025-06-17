@@ -15,7 +15,7 @@ const Header = ({ handleToggleSidebar, toggleSidebar }) => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "background.default" }}>
+    <AppBar position="static" sx={{py:isMobile?1:0, backgroundColor: "background.default" }}>
       <Toolbar>
         <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
           Chat with AI

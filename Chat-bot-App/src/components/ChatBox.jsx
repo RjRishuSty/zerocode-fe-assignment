@@ -51,10 +51,10 @@ const ChatBox = () => {
       sx={{
         width: smallLaptop ? "100%" : "80%",
         mx: "auto",
-        mt:isMobile?1: 5,
+        mt:isMobile?2: 5,
         display: "flex",
         flexDirection: "column",
-        height:isMobile?"85vh":"80vh",
+        height:"80vh",
         border: "1px solid #ccc",
         borderRadius: 2,
         overflow: "hidden",
